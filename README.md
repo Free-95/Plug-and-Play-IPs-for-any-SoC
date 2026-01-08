@@ -7,23 +7,21 @@
 
 **Functionality:**
 - Four 32-bit registers
-- *PWM_CTRL*    : Bit 0 represents enable line (1 → enable PWM), Bit 1 indicates polarity (0 → Active HIGH, 1 → Active LOW), other bits are reserved.
+- *PWM_CTRL*    : `Bit 0` represents enable line (1 → enable PWM), `Bit 1` indicates polarity (0 → Active HIGH, 1 → Active LOW), other bits are reserved.
 - *PWM_PERIOD*  : Period count in ticks. Must be >= 1 .
-- *PWM_DUTY*    : Duty count in ticks. Output is active for DUTY ticks, inactive for the rest of the period. (PWM_DUTY=0 → always inactive, PWM_DUTY=1 → always active)
-- *PWM_STATUS*  : Bit 0 → Enable line, Bits [31:16] → Current Counter value
+- *PWM_DUTY*    : Duty count in ticks. Output is active for `PWM_DUTY` ticks, inactive for the rest of the period. (`PWM_DUTY=0` → always inactive, `PWM_DUTY=1` → always active)
+- *PWM_STATUS*  : `Bit 0` → Enable line, `Bits [31:16]` → Current Counter value
 
 **Interface:**
 - Memory-mapped, connected to the existing CPU bus
 - Uses the bus signals already present in the SoC
 
 **Address Map:**
-- Base Address    : `0x400000`
-|Offset|Register|R/W|
-|---|---|---|
-|`0x20`|PWM_CTRL|R/W|
-|`0x24`|PWM_PERIOD|R/W|
-|`0x28`|PWM_DUTY|R/W|
-|`0x2C`|PWM_STATUS|R|
+- Base Address  : `0x400000`
+- PWM_CTRL      : `0x20`
+- PWM_PERIOD    : `0x24`
+- PWM_DUTY      : `0x28`
+- PWM_STATUS    : `0x2C`
 ___
 ## Writing the PWM IP RTL
 
@@ -33,7 +31,7 @@ ___
 
 **Path to `pwm_ip.v`:** `./basicRISCV/RTL/`
 
-**RTL Code:***
+**RTL Code:**
 ```verilog
 module pwm_ip (
     input             clk,
@@ -131,14 +129,15 @@ ___
 
 **Updates in `SOC` module of `riscv.v`:**
 - Added the output port `PWM`.
-- Added the select signal for PWM 
+- Added the select signal for PWM - 
 	```verilog
 	wire pwm_sel  = isIO & (mem_addr[7:4] == 4'h2)`.
 	```
-- Instantiate PWM IP
-- Update Read Data MUX
+- Instantiated PWM IP.
+- Updated Read Data MUX.
 
 **Updates in `VSDSquadronFM.pcf`:**
+
 Mapped the PWM port -
 ```pcf
 set_io PWM 28
@@ -213,6 +212,7 @@ void main() {
 
 ### Header files
 1. **`io.h`**
+
 	*Updates:* Defined the address offsets of PWM registers -
 	```h
 	#define PWM_CTRL     0x20
@@ -223,6 +223,7 @@ void main() {
 
 	*Path to `io.h`:* `./basicRISCV/Firmware/`
 2. **`uart.h`**
+
 	Header file defining the `uprint()` function that prints UART DATA to console.
 
 	*Path to `uart.h`:* `./basicRISCV/Firmware/`
@@ -231,50 +232,50 @@ ___
 
 1. Reduce the delays (e.g., `delay(10000);`) in software application `pwm_test.c` to speed up the simulation.
 2. Convert it to a `.hex` file.
-        ```bash
-        cd ./basicRISCV/Firmware
-        make pwm_test.bram.hex
-        ```
+	```bash
+	cd ./basicRISCV/Firmware
+       	make pwm_test.bram.hex
+     	```
 3. Simulate the SoC.
-        ```bash
-        cd ../RTL
-        iverilog -D BENCH -o pwm_test tb.v riscv.v pwm_ip.v gpio_control_ip.v sim_cells.v
-        vvp pwm_test
-        ```
+       	```bash
+       	cd ../RTL
+       	iverilog -D BENCH -o pwm_test tb.v riscv.v pwm_ip.v gpio_control_ip.v sim_cells.v
+       	vvp pwm_test
+       	```
 
-   ![simulation output](images/sim_output.png)
-   This image confirms that messages are transmitted perfectly through UART.
+	![simulation output](images/sim_output.png)
+	This image confirms that messages are transmitted perfectly through UART.
 
 4. Observe the waveform.
-        ```bash
-        gtkwave pwm_test.vcd
-        ```
+       	```bash
+       	gtkwave pwm_test.vcd
+       	```
 
-   ![simulation waveform](images/waveform.png)
-   This waveform confirms that the IP is working according to the software program `pwm_test.c`.
+	![simulation waveform](images/waveform.png)
+	This waveform confirms that the IP is working according to the software program `pwm_test.c`.
 
-   ![pwm in waveform](images/pwm.png)
-   This zoomed waveform provides a close observation of `PWM` signal, demonstrating the successful working of IP.
+	![pwm in waveform](images/pwm.png)
+	This zoomed waveform provides a close observation of `PWM` signal, demonstrating the successful working of IP.
 ___
 ## Performing Hardware Validation
 
 **Steps:**
 1. Add original delay values in software application `pwm_test.c` and rewrite the `pwm_test.bram.hex` file. This delay provides visibility of change in real-time.
 2. Update the first line in `build` section of `Makefile` in `RTL` directory as follows -
-        ```bash
-        yosys  -q -p "synth_ice40 -top $(TOP) -json $(TOP).json" $(VERILOG_FILE) gpio_control_ip.v pwm_ip.v
-        ```
+       	```bash
+       	yosys  -q -p "synth_ice40 -top $(TOP) -json $(TOP).json" $(VERILOG_FILE) gpio_control_ip.v pwm_ip.v
+       	```
 3. Perform the Synthesis & Flash through `Yosys (Synth) → Nextpnr (Place & Route) → Icepack (Bitstream)`.
-        ```bash
-        make build
-        make flash
-        ```
+       	```bash
+       	make build
+       	make flash
+       	```
 4. Make the physical connections and observe the output.
 5. Observe the output received through UART on console.
-        ```bash
-        make terminal
-        ```
+       	```bash
+       	make terminal
+       	```
 
-   ![Console output](images/console_output.png)
+	![Console output](images/console_output.png)
 ___
 
