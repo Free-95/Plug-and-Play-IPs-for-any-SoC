@@ -7,10 +7,18 @@
 
 **Functionality:**
 - Four 32-bit registers
-- *PWM_CTRL*    : `Bit 0` represents enable line (1 → enable PWM), `Bit 1` indicates polarity (0 → Active HIGH, 1 → Active LOW), other bits are reserved.
+- *PWM_CTRL*    : 
+	`Bit 0` represents enable line (1 → enable PWM)
+	`Bit 1` indicates polarity (0 → Active HIGH, 1 → Active LOW)
+	Other bits are reserved.
 - *PWM_PERIOD*  : Period count in ticks. Must be >= 1 .
-- *PWM_DUTY*    : Duty count in ticks. Output is active for `PWM_DUTY` ticks, inactive for the rest of the period. (`PWM_DUTY=0` → always inactive, `PWM_DUTY=1` → always active)
-- *PWM_STATUS*  : `Bit 0` → Enable line, `Bits [31:16]` → Current Counter value
+- *PWM_DUTY*    : 
+	Duty count in ticks. 
+	Output is active for `PWM_DUTY` ticks, inactive for the rest of the period. 
+	(`PWM_DUTY=0` → always inactive, `PWM_DUTY=1` → always active)
+- *PWM_STATUS*  : 
+	`Bit 0` → Enable line
+	`Bits [31:16]` → Current Counter value
 
 **Interface:**
 - Memory-mapped, connected to the existing CPU bus
