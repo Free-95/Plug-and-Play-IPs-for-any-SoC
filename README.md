@@ -7,18 +7,10 @@
 
 **Functionality:**
 - Four 32-bit registers
-- *PWM_CTRL*    : 
-	`Bit 0` represents enable line (1 → enable PWM)
-	`Bit 1` indicates polarity (0 → Active HIGH, 1 → Active LOW)
-	Other bits are reserved.
+- *PWM_CTRL*    : `Bit 0` represents enable line (1 → enable PWM), `Bit 1` indicates polarity (0 → Active HIGH, 1 → Active LOW), Other bits are reserved.
 - *PWM_PERIOD*  : Period count in ticks. Must be >= 1 .
-- *PWM_DUTY*    : 
-	Duty count in ticks. 
-	Output is active for `PWM_DUTY` ticks, inactive for the rest of the period. 
-	(`PWM_DUTY=0` → always inactive, `PWM_DUTY=1` → always active)
-- *PWM_STATUS*  : 
-	`Bit 0` → Enable line
-	`Bits [31:16]` → Current Counter value
+- *PWM_DUTY*    : Duty count in ticks. Output is active for `PWM_DUTY` ticks, inactive for the rest of the period. (`PWM_DUTY = 0` → always inactive, `PWM_DUTY = 1` → always active)
+- *PWM_STATUS*  : `Bit 0` → Enable line, `Bits [31:16]` → Current Counter value
 
 **Interface:**
 - Memory-mapped, connected to the existing CPU bus
@@ -242,22 +234,22 @@ ___
 2. Convert it to a `.hex` file.
 	```bash
 	cd ./basicRISCV/Firmware
-       	make pwm_test.bram.hex
-     	```
+ 	make pwm_test.bram.hex
+ 	```
 3. Simulate the SoC.
-       	```bash
-       	cd ../RTL
-       	iverilog -D BENCH -o pwm_test tb.v riscv.v pwm_ip.v gpio_control_ip.v sim_cells.v
-       	vvp pwm_test
-       	```
+   	```bash
+    cd ../RTL
+    iverilog -D BENCH -o pwm_test tb.v riscv.v pwm_ip.v gpio_control_ip.v sim_cells.v
+    vvp pwm_test
+    ```
 
 	![simulation output](images/sim_output.png)
 	This image confirms that messages are transmitted perfectly through UART.
 
 4. Observe the waveform.
-       	```bash
-       	gtkwave pwm_test.vcd
-       	```
+   	```bash
+    gtkwave pwm_test.vcd
+    ```
 
 	![simulation waveform](images/waveform.png)
 	This waveform confirms that the IP is working according to the software program `pwm_test.c`.
@@ -270,19 +262,19 @@ ___
 **Steps:**
 1. Add original delay values in software application `pwm_test.c` and rewrite the `pwm_test.bram.hex` file. This delay provides visibility of change in real-time.
 2. Update the first line in `build` section of `Makefile` in `RTL` directory as follows -
-       	```bash
-       	yosys  -q -p "synth_ice40 -top $(TOP) -json $(TOP).json" $(VERILOG_FILE) gpio_control_ip.v pwm_ip.v
-       	```
+	```bash
+ 	yosys  -q -p "synth_ice40 -top $(TOP) -json $(TOP).json" $(VERILOG_FILE) gpio_control_ip.v pwm_ip.v
+ 	```
 3. Perform the Synthesis & Flash through `Yosys (Synth) → Nextpnr (Place & Route) → Icepack (Bitstream)`.
-       	```bash
-       	make build
-       	make flash
-       	```
+   	```bash
+    make build
+    make flash
+    ```
 4. Make the physical connections and observe the output.
 5. Observe the output received through UART on console.
-       	```bash
-       	make terminal
-       	```
+   	```bash
+    make terminal
+    ```
 
 	![Console output](images/console_output.png)
 ___
