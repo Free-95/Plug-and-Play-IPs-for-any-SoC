@@ -1,6 +1,5 @@
-/**
- * Step 20: Creating a RISC-V processor
- * Using GNU tools
+/*
+ * A RISC-V processor created using GNU tools
  */
 
 `default_nettype none
