@@ -1,4 +1,3 @@
-
 /*
  * Clockworks includes
  *   - gearbox to divide clock frequency, used
@@ -8,8 +7,7 @@
  *   - reset mechanism that resets the design
  *     during the first microseconds because
  *     reading in Ice40 BRAM during the first 
- *     few microseconds returns garbage !
- *     (made me bang my head against the wall). 
+ *     few microseconds returns garbage ! 
  * 
  * Parameters
  *     SLOW number of bits of gearbox. Clock divider

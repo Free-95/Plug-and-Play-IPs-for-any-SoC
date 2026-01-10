@@ -5,14 +5,13 @@ BOARD_FREQ=10
 CPU_FREQ=12
 FPGA_VARIANT=up5k
 FPGA_PACKAGE=sg48
-VERILOG_FILE= riscv.v
 
 #Uart Var	
 PICO_DEVICE=/dev/ttyUSB0
 BAUDS=9600
 
 build:
-	yosys  -q -p "synth_ice40 -top $(TOP) -json $(TOP).json" $(VERILOG_FILE) gpio_control_ip.v pwm_ip.v
+	yosys  -q -p "synth_ice40 -top $(TOP) -json $(TOP).json" riscv.v ../../ip/multi-register_gpio/rtl/gpio_control_ip.v ../../ip/pwm/rtl/pwm_ip.v
 	nextpnr-ice40 --force --json $(TOP).json --pcf $(PCF_FILE).pcf --asc $(TOP).asc --freq $(BOARD_FREQ) --$(FPGA_VARIANT) --package $(FPGA_PACKAGE) --opt-timing
 	icetime -p $(PCF_FILE).pcf -P $(FPGA_PACKAGE) -r $(TOP).timings -d $(FPGA_VARIANT) -t $(TOP).asc
 	icepack -s $(TOP).asc $(TOP).bin

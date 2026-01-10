@@ -6,6 +6,8 @@
 `default_nettype none
 `include "clockworks.v"
 `include "emitter_uart.v"
+`include "../../ip/multi-register_gpio/rtl/gpio_control_ip.v"
+`include "../../ip/pwm/rtl/pwm_ip.v"
 
 module Memory (
    input             clk,

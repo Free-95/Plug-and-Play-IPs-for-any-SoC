@@ -1,6 +1,6 @@
 // --- Program to display multiples of a specified positive integer ---
 #include <stdint.h>
-#include "io.h"
+#include "../../../basicRISCV/software/common/io.h"
 #define NUM 3 // Specified integer
 
 // Function to transmit message through UART

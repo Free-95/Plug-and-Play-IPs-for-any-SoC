@@ -15,7 +15,7 @@ module testbench;
     );
 
     initial begin
-        $dumpfile("pwm_test.vcd");
+        $dumpfile("test.vcd");
         $dumpvars(0, testbench);
 
         // Init
