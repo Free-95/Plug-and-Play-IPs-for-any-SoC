@@ -21,7 +21,7 @@ This is a Single-channel, memory-mapped Pulse Width Modulation (PWM) controller.
 	    .pwm_out(pwm_pin)     // External Output Pin
 	);
 	```
-3. **Map Address:** Recommended Base Address is `0x400000` (User defined).
+3. **Map Address:** Select a base address for Memory-Mapped IO. Recommended Base Address is `0x400000`.
 
 ## Documentation
 Detailed guides are located in the `docs/` folder:
@@ -30,6 +30,9 @@ Detailed guides are located in the `docs/` folder:
 * [**Register Map**](docs/Register_Map.md) – Address offsets and bit definitions.
 * [**Example Usage**](docs/Example_Usage.md) – C driver code snippets.
 
-### 🧪 How to Test
+## How to Test
 A reference C application is provided in `software/pwm_test.c`.
-* **Function:** Configures the PWM and performs a "breathing LED" effect.
+* **What it does:** Configures the PWM and performs a "breathing LED" effect.
+* **Expected Output:**
+	* **UART:** PWM and Polarity status messages from software application `pwm_test.c`.
+	* **LED:** Exhibiting a "breathe" effect.
