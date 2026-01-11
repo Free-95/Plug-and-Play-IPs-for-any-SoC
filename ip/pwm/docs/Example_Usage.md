@@ -89,13 +89,14 @@ void main() {
 
 ## 3. RTL Simulation
 
-1. Convert `pwm_test.c` to a `.hex` file.
+1. Reduce the delay in software application `pwm_test.c` to speed up the simulation.
+2. Convert `pwm_test.c` to a `.hex` file.
 	```bash
     cd ./basicRISCV/software
     cp ../../ip/pwm/software/pwm_test.c .
  	make pwm_test.bram.hex
  	```
-2. Simulate the SoC.
+3. Simulate the SoC.
    	```bash
     cd ../RTL
     iverilog -D BENCH -o pwm_test tb.v riscv.v sim_cells.v 
@@ -105,7 +106,7 @@ void main() {
     **Expected Output:**
    	<img width="974" height="360" alt="pwm_output" src="https://github.com/user-attachments/assets/77096d91-a8d0-4cf7-b1ea-2b39b5571999" />
 
-3. Observe the waveform.
+4. Observe the waveform.
    ```bash
    gtkwave test.vcd
    ```
@@ -115,13 +116,14 @@ void main() {
 
 ## 4. Hardware Validation
 
-1. Perform the Synthesis & Flash through `Yosys (Synth) → Nextpnr (Place & Route) → Icepack (Bitstream)`. The commands for which are written in the `Makefile` in `basicRISCV/rtl` directory.
+1. Turn back delay in software application `pwm_test.c` to original values and rewrite the `pwm_test.bram.hex` file. This delay facilitates visible changes over the hardware.
+2. Perform the Synthesis & Flash through `Yosys (Synth) → Nextpnr (Place & Route) → Icepack (Bitstream)`. The commands for which are written in the `Makefile` in `basicRISCV/rtl` directory.
    ```bash
    make build
    make flash
    ```
-2. Make the physical connections and observe the output.
-3. Observe the output received through UART on console.
+3. Make the physical connections and observe the output.
+4. Observe the output received through UART on console.
    ```bash
    make terminal
    ```
