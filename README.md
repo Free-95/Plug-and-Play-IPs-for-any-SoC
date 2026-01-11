@@ -43,4 +43,4 @@ IPs in this repository undergo a two-step verification process:
 
 ______
 
-*This project was developed as a part of the VSDSquadron FPGA Mini Internship.*
+*This project was developed as a part of the VSDSquadron FPGA Internship.*
