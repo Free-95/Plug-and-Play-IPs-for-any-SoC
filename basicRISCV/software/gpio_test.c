@@ -24,7 +24,7 @@ void inc(int* counter) {
 }
 
 void main() {
-    delay(5000000);
+    delay(1000000);
     print_uart("\n--- Multi-Register GPIO IP Test ---\n");
     print_uart("\nGuess the integer whose multiples are being displayed in binary below:\n");
 
