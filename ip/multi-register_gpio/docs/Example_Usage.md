@@ -103,14 +103,16 @@ void main() {
     ```
 
     **Expected Output:**
-    ![simulation output](images/sim_output.png)
+    <img width="927" height="374" alt="gpio_output" src="https://github.com/user-attachments/assets/07030407-b259-4da3-9706-ed4b70d1c6db" />
 
-5. Observe the waveform.
+
+4. Observe the waveform.
    ```bash
    gtkwave test.vcd
    ```
 
-   ![simulation waveform](images/sim_waveform.png)
+   <img width="1592" height="190" alt="gpio_waveform" src="https://github.com/user-attachments/assets/07d9f069-71f3-40c0-be21-dabe1b7a98e9" />
+
 
 ## 4. Hardware Validation
 
@@ -120,8 +122,8 @@ void main() {
    make build
    make flash
    ```
-4. Make the physical connections and observe the output.
-5. Observe the output received through UART on console.
+3. Make the physical connections and observe the output.
+4. Observe the output received through UART on console.
    ```bash
    make terminal
    ```
