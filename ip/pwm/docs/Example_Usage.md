@@ -1,63 +1,126 @@
 # Example Usage
+Here, we'll integrate the IP within a RISC-V SoC module present in the directory `basicRISCV/rtl`.
 
 ## 1. C Driver Macros
-Include these definitions in your `io.h` to interact with the IP.
+Include these definitions in your `io.h` or main file to interact with the IP.
+
+Here, `io.h` is present in `basicRISCV/software/common`.
 
 ```c
 #include <stdint.h>
 
-#define PWM_BASE 0x800000 // Update with your actual base address
-#define PWM_CTRL   0x00
-#define PWM_PERIOD 0x04
-#define PWM_DUTY   0x08
-#define PWM_STATUS 0x0C
+#define IO_BASE      0x400000 // IO Base Address
 
-#define IO_WRITE(offset, val) (*(volatile uint32_t*)(PWM_BASE + (offset)) = (val))
-#define IO_READ(offset)       (*(volatile uint32_t*)(PWM_BASE + (offset)))
+// PWM  Offsets
+#define PWM_CTRL     0x20
+#define PWM_PERIOD   0x24
+#define PWM_DUTY     0x28
+#define PWM_STATUS   0x2C
+
+// Access Macros
+#define IO_IN(offset)     (*(volatile uint32_t*)(IO_BASE + (offset)))
+#define IO_OUT(offset,val) (*(volatile uint32_t*)(IO_BASE + (offset)) = (val))
 ```
 
 ## 2. Breathing LED Example
-This code configures the PWM for a 1kHz signal (assuming 1MHz clock) and smoothly fades the LED on and off.
+This code configures the PWM for a 1kHz signal (assuming 1MHz clock) and smoothly fades the LED on and off. Also demonstrates polarity inversion.
 
 ```c
-void pwm_breathe() {
-    // 1. Configure Period (1000 ticks)
-    IO_WRITE(PWM_PERIOD, 1000);
+#include "../../../basicRISCV/software/common/io.h"
+#include "../../../basicRISCV/software/common/uart.h" // Custom UART Header File
 
-    // 2. Enable PWM (Active High)
-    // Bit 0 = 1 (Enable), Bit 1 = 0 (Polarity Normal)
-    IO_WRITE(PWM_CTRL, 1);
+// Delay function
+void delay(int cycles) {
+    for (volatile int i = 0; i < cycles; i++);
+}
 
+void main() {
+    uprint("\n\t\t\t\t--- PWM IP Test ---\n");    
+
+    // Configure PWM
+    int polarity = 0;                          // Polarity = 0 (Active HIGH)
+    const char *mode = (polarity == 1) ? "Active LOW" : "Active HIGH";
+    IO_OUT(PWM_PERIOD, 1000);                  // Set Period to 1000 ticks
+    IO_OUT(PWM_CTRL, polarity * 2 + 1);        // Enable = 1 
+    uprint("\nConfiguring PWM: Period=%d, Mode=%s\n", 1000, mode);
+
+    uint32_t status = IO_IN(PWM_STATUS);
+    uprint("PWM Enabled. Current Status: 0x%x\n", status);
+
+    // Breathe LED effect
     int duty = 0;
     int direction = 1;
+    int count = 0;
 
-    while(1) {
-        // 3. Update Duty Cycle
-        IO_WRITE(PWM_DUTY, duty);
+    jump:
+    while (count < 3) { // Breathe 3 times 
+        // Update Duty Cycle
+        IO_OUT(PWM_DUTY, duty);
+        delay(10000); // Wait a bit so changes are visible
 
-        // Logic to fade in and out
         if (direction) {
             duty += 10;
             if (duty >= 1000) direction = 0;
         } else {
             duty -= 10;
-            if (duty <= 0) direction = 1;
+            if (duty <= 0) { direction = 1; count++; }
         }
-
-        // Delay to make the effect visible
-        for(volatile int i=0; i<5000; i++);
     }
+    
+    // Disable PWM
+    IO_OUT(PWM_CTRL, 0);
+    status = IO_IN(PWM_STATUS);
+    uprint("\nPWM Disabled. Current Status: 0x%x\n", status);
+    delay(500000); // Wait for few seconds to observe disability
+
+    // Invert the polarity
+    count = 0;
+    polarity = (polarity + 1) % 2;
+    mode = (polarity == 1) ? "Active LOW" : "Active HIGH";
+    IO_OUT(PWM_CTRL, polarity * 2 + 1);
+    status = IO_IN(PWM_STATUS);
+    uprint("\nPolarity Inverted. Current Status: 0x%x. Mode=%s\n", status, mode);
+
+    goto jump;    // Repeat the same process  
 }
 ```
 
-## 3. Inverting Polarity
-To switch to "Active Low" mode (e.g., for LEDs that turn on when the pin is pulled low):
+**Path**: `ip/pwm/software`
 
-```c
-void set_active_low() {
-    // Bit 0 = 1 (Enable)
-    // Bit 1 = 1 (Active Low) -> 0x3
-    IO_WRITE(PWM_CTRL, 3);
-}
-```
+## 3. RTL Simulation
 
+1. Convert `pwm_test.c` to a `.hex` file.
+	```bash
+    cd ./basicRISCV/software
+    cp ../../ip/pwm/software/pwm_test.c .
+ 	make pwm_test.bram.hex
+ 	```
+2. Simulate the SoC.
+   	```bash
+    cd ../RTL
+    iverilog -D BENCH -o pwm_test tb.v riscv.v sim_cells.v 
+    vvp pwm_test
+    ```
+
+    **Expected Output:**
+    ![simulation output](images/sim_output.png)
+
+3. Observe the waveform.
+   ```bash
+   gtkwave test.vcd
+   ```
+
+   ![simulation waveform](images/sim_waveform.png)
+
+## 4. Hardware Validation
+
+1. Perform the Synthesis & Flash through `Yosys (Synth) → Nextpnr (Place & Route) → Icepack (Bitstream)`. The commands for which are written in the `Makefile` in `basicRISCV/rtl` directory.
+   ```bash
+   make build
+   make flash
+   ```
+2. Make the physical connections and observe the output.
+3. Observe the output received through UART on console.
+   ```bash
+   make terminal
+   ```
