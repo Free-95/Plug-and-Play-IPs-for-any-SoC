@@ -9,7 +9,7 @@ The goal is to create peripherals that use standard memory-mapped interfaces, al
 * **`basicRISCV/`**: Contains the reference SoC implementation (RTL), firmware drivers, and simulation environment used to test the IPs.
 
 
-## Available IPs
+## Getting Started
 Below is a list of the custom peripheral IPs developed in this repository. Click on the IP Name to view its detailed documentation, register map, and integration guide.
 
 | IP Name | Description | Key Features |
@@ -40,15 +40,6 @@ IPs in this repository undergo a two-step verification process:
 * Platform: VSDSquadron FPGA (Lattice iCE40).
 * Tools: `yosys`, `nextpnr`, `icepack`.
 * Verifies real-world functionality using UART console output and physical peripherals.
-
-
-## Getting Started
-
-Visit the `docs/` of the respective IPs to check an example usage of the same.
-| IP Name             | Documentation                               |
-| :-----------------: | :-----------------------------------------: |
-| PWM IP              | [pwm ip docs](ip/pwm/docs)                  |
-| GPIO Control IP     | [gpio ip docs](ip/multi-register_gpio/docs) |
 
 ______
 
