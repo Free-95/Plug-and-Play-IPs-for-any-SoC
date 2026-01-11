@@ -51,7 +51,7 @@ module pwm_ip (
                 CTRL:   o_rdata = reg_ctrl;
                 PERIOD: o_rdata = reg_period;
                 DUTY:   o_rdata = reg_duty;
-                STATUS: o_rdata = {counter, 15'b0, ctrl_en}; // Bit 0: RUNNING, Bits [31:16]: CURRENT COUNTER
+                STATUS: o_rdata = {counter[15:0], 15'b0, ctrl_en}; // Bit 0: RUNNING, Bits [31:16]: CURRENT COUNTER
                 default: o_rdata = 32'b0;
             endcase
         end else begin
