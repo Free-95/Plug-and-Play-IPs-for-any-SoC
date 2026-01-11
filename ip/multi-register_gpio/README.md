@@ -1,7 +1,7 @@
 # GPIO Control IP
 
 ## What is this IP?
-This is a 4-channel, memory-mapped GPIO controller designed for VSDSquadron FPGA and RISC-V SoCs.
+This is a 4-channel, memory-mapped GPIO controller designed for VSDSquadron FPGA SoCs.
 * **Function:** Drive digital outputs (LEDs) or read digital inputs (Buttons).
 * **Interface:** Standard 32-bit APB-style bus.
 * **Key Feature:** Simple direct register access (Data, Direction, Read).
@@ -21,7 +21,7 @@ This is a 4-channel, memory-mapped GPIO controller designed for VSDSquadron FPGA
 	    .gpio_pins(gpio_pins) // Inout Ports
 	);
 	```
-3. **Map Address:** Recommended Base Address is `0x400000`.
+3. **Map Address:** Select a base address for Memory-Mapped IO. Recommended Base Address is `0x400000`.
 
 ## Documentation
 Detailed guides are located in the `docs/` folder:
@@ -36,5 +36,4 @@ A reference C application is provided in `software/gpio_test.c`.
 * **Expected Output:**
 	* **UART:** Messages from software application `gpio_test.c`.
 	* **LEDs:** Toggling pattern on the connected pins.
-* **Run it:** Compile `gpio_test.c` using your standard RISC-V toolchain and load the hex file into the SoC memory.
 
