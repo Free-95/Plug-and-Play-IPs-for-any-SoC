@@ -37,7 +37,7 @@ A reference C application is provided in `software/gpio_test.c`.
 	* **UART:** Messages from software application `gpio_test.c`.
 	* **LEDs:** Toggling pattern on the connected pins.
 
-<video src="[user-images.githubusercontent.com](https://github.com/user-attachments/assets/d29852eb-c031-47b4-8e7c-066a9c299ad2)" controls width="500">![Demo video](https://github.com/user-attachments/assets/d29852eb-c031-47b4-8e7c-066a9c299ad2)</video>
+	<video src="[user-images.githubusercontent.com](https://github.com/user-attachments/assets/d29852eb-c031-47b4-8e7c-066a9c299ad2)" controls width="500">![Demo video](https://github.com/user-attachments/assets/d29852eb-c031-47b4-8e7c-066a9c299ad2)</video>
 
 https://github.com/user-attachments/assets/d29852eb-c031-47b4-8e7c-066a9c299ad2
 
