@@ -103,14 +103,15 @@ void main() {
     ```
 
     **Expected Output:**
-    ![simulation output](images/sim_output.png)
+   	<img width="974" height="360" alt="pwm_output" src="https://github.com/user-attachments/assets/77096d91-a8d0-4cf7-b1ea-2b39b5571999" />
 
 3. Observe the waveform.
    ```bash
    gtkwave test.vcd
    ```
 
-   ![simulation waveform](images/sim_waveform.png)
+   <img width="1582" height="191" alt="pwm_waveform" src="https://github.com/user-attachments/assets/8fafaa1e-b362-4f69-8972-17335cce0dfc" />
+
 
 ## 4. Hardware Validation
 
