@@ -1,6 +1,7 @@
-# GPIO IP Register Map
+# GPIO Control IP Register Map
 
 **Base Address:** User Configurable (Default in this repo: `0x400000`)
+
 **Register Width:** 32-bit (Only lower 4 bits are active)
 
 | Offset | Name       | R/W | Description                                      |
@@ -17,7 +18,7 @@ Stores the value to be driven to the pins when in Output Mode.
 * **Bits [3:0]:** Output value for Pins 3 to 0.
 
 ### 2. GPIO_DIR (Offset 0x04)
-Controls the direction of the IO pads.
+Controls the direction of the IO pins.
 * **Bits [31:4]:** Reserved/Ignored.
 * **Bits [3:0]:** Direction for Pins 3 to 0.
     * `1`: Output Mode (Drive pin).
