@@ -36,3 +36,9 @@ A reference C application is provided in `software/pwm_test.c`.
 * **Expected Output:**
 	* **UART:** PWM and Polarity status messages from software application `pwm_test.c`.
 	* **LED:** Exhibiting a "breathe" effect.
+
+	<video src="[user-images.githubusercontent.com](https://github.com/user-attachments/assets/f9b64f7a-3eaf-49b2-b733-5c531b5b4225)" controls width="500">![Demo video](https://github.com/user-attachments/assets/f9b64f7a-3eaf-49b2-b733-5c531b5b4225)</video>
+
+https://github.com/user-attachments/assets/f9b64f7a-3eaf-49b2-b733-5c531b5b4225
+
+
