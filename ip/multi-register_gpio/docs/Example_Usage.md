@@ -1,10 +1,10 @@
 # Example Usage
-Here, we'll integrate the IP within a RISC-V SoC module present in the directory `./basicRISCV/rtl`.
+Here, we'll integrate the IP within a RISC-V SoC module present in the directory `basicRISCV/rtl`.
 
 ## 1. C Driver Macros
 Include these definitions in your `io.h` or main file to interact with the IP.
 
-Here, `io.h` is present in `./basicRISCV/software/common`.
+Here, `io.h` is present in `basicRISCV/software/common`.
 
 ```c
 #include <stdint.h>
@@ -23,8 +23,9 @@ Here, `io.h` is present in `./basicRISCV/software/common`.
 A program to display multiples of a specified positive integer.
 
 ```c
+// --- Program to display multiples of a specified positive integer ---
 #include <stdint.h>
-#include "io.h"
+#include "../../../basicRISCV/software/common/io.h"
 #define NUM 3 // Specified integer
 
 // Function to transmit message through UART
@@ -83,7 +84,8 @@ void main() {
 }
 ```
 
-**Path**: `./ip/multi-register_gpio/software`
+**Path**: `ip/multi-register_gpio/software`
+
 ## 3. RTL Simulation
 
 1. [Optional] Comment out the delay function calls in software application `gpio_test.c` to speed up the simulation.
@@ -105,7 +107,7 @@ void main() {
 
 5. Observe the waveform.
    ```bash
-   gtkwave gpio_test.vcd
+   gtkwave test.vcd
    ```
 
    ![simulation waveform](images/sim_waveform.png)
@@ -113,7 +115,7 @@ void main() {
 ## 4. Hardware Validation
 
 1. Uncomment the delay function calls in software application `gpio_test.c` if you commented them out during simulation and rewrite the `gpio_test.bram.hex` file. This delay facilitates visible changes over the hardware.
-2. Perform the Synthesis & Flash through `Yosys (Synth) → Nextpnr (Place & Route) → Icepack (Bitstream)`. The commands for which are written in the `Makefile` in `./basicRISCV/rtl` directory.
+2. Perform the Synthesis & Flash through `Yosys (Synth) → Nextpnr (Place & Route) → Icepack (Bitstream)`. The commands for which are written in the `Makefile` in `basicRISCV/rtl` directory.
    ```bash
    make build
    make flash
