@@ -122,7 +122,7 @@ void main() {
    make build
    make flash
    ```
-3. Make the physical connections and observe the output.
+3. Make the physical connections and observe the output. Don't leave the RESET port to float, make sure to connect it appropriately otherwise board will assume it to be permanently pressed.
 4. Observe the output received through UART on console.
    ```bash
    make terminal
