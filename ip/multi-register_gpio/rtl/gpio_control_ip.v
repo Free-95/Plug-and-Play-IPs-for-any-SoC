@@ -1,4 +1,6 @@
-module gpio_control_ip #(
+`timescale 1ns / 1ps
+
+module gpio_ip #(
     parameter ADDR_WIDTH = 4,
     parameter DATA_WIDTH = 32,
     parameter GPIO_WIDTH = 4
@@ -23,17 +25,17 @@ module gpio_control_ip #(
     // Registers
     reg [GPIO_WIDTH-1:0] gpio_data;
     reg [GPIO_WIDTH-1:0] gpio_dir;
-
+    
     // --- Write Logic ---
     always @(posedge clk or negedge resetn) begin
         if (!resetn) begin
             gpio_data <= 0;
             gpio_dir  <= 0;
         end else if (i_sel && i_we) begin
-            case (i_addr)
-                DATA: gpio_data <= i_wdata[GPIO_WIDTH-1:0];
-                DIR : gpio_dir  <= i_wdata[GPIO_WIDTH-1:0];
-            endcase
+                case (i_addr)
+                    DATA: gpio_data <= i_wdata[GPIO_WIDTH-1:0];
+                    DIR : gpio_dir  <= i_wdata[GPIO_WIDTH-1:0];
+                endcase
         end
     end
 
@@ -53,9 +55,9 @@ module gpio_control_ip #(
     // 1 (Output mode), 0 (Input mode)
     genvar i;
     generate
-        for (i = 0; i < GPIO_WIDTH; i = i + 1) begin : gpio_ctrl
+        for (i = 0; i < GPIO_WIDTH; i = i + 1) begin: gpio_ctrl
             assign gpio_pins[i] = gpio_dir[i] ? gpio_data[i] : 1'bz;
         end
     endgenerate
-
+    
 endmodule
