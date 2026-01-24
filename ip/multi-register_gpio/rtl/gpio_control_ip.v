@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module gpio_ip #(
+module gpio_control_ip #(
     parameter ADDR_WIDTH = 4,
     parameter DATA_WIDTH = 32,
     parameter GPIO_WIDTH = 4
