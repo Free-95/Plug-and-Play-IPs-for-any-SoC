@@ -66,7 +66,7 @@ module pwm_ip (
         if (!resetn) begin
             counter <= 32'b0;
             pwm_out <= 1'b0;
-        end else if (ctrl_en && !i_we) begin
+        end else if (ctrl_en && !(i_we && i_sel)) begin
             // Counter Management
             if (counter >= (reg_period - 1)) begin
                 counter <= 32'b0;
